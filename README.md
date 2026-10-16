@@ -182,7 +182,7 @@ An interactive training tool where you play as a store employee and an AI plays 
 5. **Run the app**
    * Run all code blocks individually by pressing the triangle on the left of them
    * You can also press the `run all` button at the top of the file when opening it with jupyter notebook
-   * Gradio prints a local address (usually `http://localhost:7860`). Open it in your browser.
+   * Gradio prints a local address (usually `http://127.0.0.1:7860`). Open it in your browser.
    * Begin interacting with the training model
 
 ## API Keys
