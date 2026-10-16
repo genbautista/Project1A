@@ -17,11 +17,14 @@ In this project, students will design and build a Python chatbot that uses an LL
   - [Phrasing Guidance](#phrasing-guidance)
   - [Common Scenario Types](#common-scenario-types)
   - [Edge Cases to Handle](#edge-cases-to-handle)
-- [Installation/How to run]
-  - [system requirements]
-  - [running the model]
-  - [prompting/usage]
-
+- [Employee Training Chatbot](#employee-training-chatbot)
+  - [Requirements](#requirements)
+  - [Installation](#Installation)
+  - [API Keys](#api-keys)
+  - [How to use the trainer](#How-to-use-the-trainer)
+  - [Troubleshooting](#troubleshooting)
+  - [Project Structure](#project-structure)
+    
 ---
 
 ## Learning Objectives
@@ -182,7 +185,7 @@ An interactive training tool where you play as a store employee and an AI plays 
    * Gradio prints a local address (usually `http://localhost:7860`). Open it in your browser.
    * Begin interacting with the training model
 
-## OpenAI API key
+## API Keys
 
 This project calls the OpenAI API, so it will not run without a key. Usage is billed to your OpenAI account, and `gpt-4o-mini` is inexpensive for this kind of use.
 
@@ -237,7 +240,7 @@ A session ends when the issue is resolved, you reach three violations, or you cl
 - **`ModuleNotFoundError`:** activate your virtual environment and re-run the `pip install` command.
 - **Port already in use:** close any other Gradio app, or stop the previous run of this one.
 
-## Project structure
+## Project Structure
 
 ```
 .
