@@ -17,6 +17,10 @@ In this project, students will design and build a Python chatbot that uses an LL
   - [Phrasing Guidance](#phrasing-guidance)
   - [Common Scenario Types](#common-scenario-types)
   - [Edge Cases to Handle](#edge-cases-to-handle)
+- [Installation/How to run]
+  - [system requirements]
+  - [running the model]
+  - [prompting/usage]
 
 ---
 
@@ -133,3 +137,112 @@ You may hard-code one scenario or randomly select one at the start of each run:
 - **Employee offers a discount outside the allowed range** (e.g., 50% off parts, or a discount on labor): this **should count as a rule violation**, since it breaks store policy even if well-intentioned.
 - **Employee offers no discount at all when one is warranted:** this should **hurt the final rating**, since the issue isn't fully resolved.
 - **Customer refuses a fair, correctly scoped offer:** the bot should reflect that the employee followed policy correctly, and the rating should reflect the employee's professionalism, even if the customer remains unhappy.
+
+
+# Employee Training Chatbot
+
+An interactive training tool where you play as a store employee and an AI plays the customer. The evaluator reviews every message you send, flags policy violations, checks whether the issue was resolved, and gives you a score plus feedback.
+
+## Requirements
+
+- **Python 3.9 or newer** ([download](https://www.python.org/downloads/))
+- **pip** (included with Python)
+- **An OpenAI API key** (see below)
+- A modern web browser (the app opens in your browser's localhost)
+
+### Python libraries
+
+| Library | Purpose |
+| --- | --- |
+| `gradio` | Chat web interface |
+| `openai` | Customer simulation and turn evaluation (`gpt-4o-mini`) |
+| `python-dotenv` | Loads your API key from the `.env` file |
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/genbautista/Project1A.git
+   cd Project1A 
+   ```
+
+2. **Install the dependencies**
+   ```bash
+   pip install gradio
+   pip install openai
+   pip install python-dotenv
+   ```
+
+3. **Add your OpenAI API key** (see the next section).
+   * Should be added into `.env` file as `OPENAI_API_KEY='API KEY'`
+
+5. **Run the app**
+   * Run all code blocks individually by pressing the triangle on the left of them
+   * You can also press the `run all` button at the top of the file when opening it with jupyter notebook
+   * Gradio prints a local address (usually `http://localhost:7860`). Open it in your browser.
+   * Begin interacting with the training model
+
+## OpenAI API key
+
+This project calls the OpenAI API, so it will not run without a key. Usage is billed to your OpenAI account, and `gpt-4o-mini` is inexpensive for this kind of use.
+
+1. Create an account or sign in at [platform.openai.com](https://platform.openai.com/).
+2. Create a key on the [API keys page](https://platform.openai.com/api-keys).
+3. Copy it right away; OpenAI only shows it once.
+4. Make sure your account has billing or credits set up.
+5. we suggest turning off automatic billing options such as auto top-up or token monthly subscription plans in case token counts accidentally get out of hand
+
+Official documentation: [OpenAI API quickstart](https://platform.openai.com/docs/quickstart)
+
+Create a file named `.env` in the project root (same folder as the Python file) containing:
+
+```
+OPENAI_API_KEY=your-key-here
+```
+
+Never commit your key. The `.gitignore` in this repo excludes `.env`; keep it that way and never share the key publicly.
+
+## How to use the trainer
+
+1. Read the customer's opening message in the chat window. You are the employee and the AI is the customer with a phone problem.
+2. Type your replies in the "Your message" box and press Enter.
+3. Diagnose first. Ask polite questions to understand the phone's problem before discussing discounts.
+4. Offer a solution that matches store policy:
+   - **Unrepairable phone:** up to 30% off a new phone, with a trade-in required.
+   - **Repairable phone:** up to 40% off new parts. No discount on labor.
+5. Wrap up clearly once the issue is addressed, and end the interaction politely.
+6. Check the sidebar after each message for your violation count, score, and feedback.
+
+### What counts as a violation
+
+- Rude or accusatory language
+- Refusing to engage or going off-topic
+- Offering a discount that breaks store policy or doesn't match the phone's repairability
+
+You are not penalized for customer hostility or for politely asking diagnostic questions before discussing discounts.
+
+### Scoring and how a session ends
+
+| Outcome | Score |
+| --- | --- |
+| 3 violations (the customer leaves) | 1 |
+| Issue resolved | 10 minus your violation count |
+| Conversation ended without resolution | 2 |
+
+A session ends when the issue is resolved, you reach three violations, or you clearly end the conversation. Once it ends, reload the page to start a new session.
+
+## Troubleshooting
+
+- **Authentication error or "request failed":** check that `.env` exists, contains `OPENAI_API_KEY`, and has no extra spaces or quotes. Confirm your account has available credit.
+- **`ModuleNotFoundError`:** activate your virtual environment and re-run the `pip install` command.
+- **Port already in use:** close any other Gradio app, or stop the previous run of this one.
+
+## Project structure
+
+```
+.
+├── app.py        # Gradio app: customer bot, evaluator, scoring
+├── .env          # Your OpenAI API key (not committed)
+├── .gitignore
+└── README.md
+```
